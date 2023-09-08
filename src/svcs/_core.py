@@ -412,10 +412,7 @@ def _takes_container(factory: Callable) -> bool:
     if name == "svcs_container":
         return True
 
-    if (annot := p.annotation) is Container or annot == "svcs.Container":
-        return True
-
-    return False
+    return (annot := p.annotation) is Container or annot == "svcs.Container"
 
 
 T1 = TypeVar("T1")
@@ -787,10 +784,7 @@ class Container:
 
             rv.append(svc)
 
-        if len(rv) == 1:
-            return rv[0]
-
-        return rv
+        return rv[0] if len(rv) == 1 else rv
 
     @overload
     async def aget(self, svc_type: type[T1], /) -> T1:
@@ -930,7 +924,4 @@ class Container:
 
             rv.append(svc)
 
-        if len(rv) == 1:
-            return rv[0]
-
-        return rv
+        return rv[0] if len(rv) == 1 else rv
